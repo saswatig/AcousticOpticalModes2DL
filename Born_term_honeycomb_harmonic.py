@@ -44,7 +44,11 @@ def d_uyvy(qx, qy):
     return f1
 
 output_dir='output'
-os.mkdir(output_dir)
+
+try:
+    os.mkdir(output_dir)
+except:
+    print("WARNING: output directory already exist")
 
 nq = 80
 nqby2 = int(nq / 2)
@@ -63,6 +67,10 @@ q0K[:, 1] = np.linspace(
 Dyn = np.zeros((4, 4), dtype=np.complex)
 Dyn_ac = np.zeros((2, 2), dtype=np.complex)
 Dyn_op = np.zeros((2, 2), dtype=np.complex)
+
+file_stat = ["a"]*nq
+file_stat[0] = "w"
+file_stat[nqby2] = "w"
 
 for iq1 in range(nq):
     if iq1 < nqby2:
@@ -105,11 +113,11 @@ for iq1 in range(nq):
     ev = sorted(results[0])
 
     if iq1 < nqby2:
-        with open(output_dir+"/harmonic_omega_sq_v_q_G0M.txt", "a") as f2:
+        with open(output_dir+"/harmonic_omega_sq_v_q_G0M.txt", file_stat[iq1]) as f2:
             print(q_comp[0], q_comp[1], qtemp, np.real(
                 ev[0]), np.real(ev[1]), np.real(ev[2]), np.real(ev[3]), file=f2)
     else:
-        with open(output_dir+"/harmonic_omega_sq_v_q_G0K.txt", "a") as f2:
+        with open(output_dir+"/harmonic_omega_sq_v_q_G0K.txt", file_stat[iq1]) as f2:
             print(q_comp[0], q_comp[1], qtemp, np.real(
                 ev[0]), np.real(ev[1]), np.real(ev[2]), np.real(ev[3]), file=f2)
 
@@ -117,11 +125,11 @@ for iq1 in range(nq):
     ev = sorted(results[0])
 
     if iq1 < nqby2:
-        with open(output_dir+"/harmonic_omega_sq_v_q_G0M_ac.txt", "a") as f2:
+        with open(output_dir+"/harmonic_omega_sq_v_q_G0M_ac.txt", file_stat[iq1]) as f2:
             print(q_comp[0], q_comp[1], qtemp, np.real(
                 ev[0]), np.real(ev[1]), file=f2)
     else:
-        with open(output_dir+"/harmonic_omega_sq_v_q_G0K_ac.txt", "a") as f2:
+        with open(output_dir+"/harmonic_omega_sq_v_q_G0K_ac.txt", file_stat[iq1]) as f2:
             print(q_comp[0], q_comp[1], qtemp, np.real(
                 ev[0]), np.real(ev[1]),  file=f2)
 
@@ -129,10 +137,10 @@ for iq1 in range(nq):
     ev = sorted(results[0])
 
     if iq1 < nqby2:
-        with open(output_dir+"/harmonic_omega_sq_v_q_G0M_op.txt", "a") as f2:
+        with open(output_dir+"/harmonic_omega_sq_v_q_G0M_op.txt", file_stat[iq1]) as f2:
             print(q_comp[0], q_comp[1], qtemp, np.real(
                 ev[0]), np.real(ev[1]), file=f2)
     else:
-        with open(output_dir+"/harmonic_omega_sq_v_q_G0K_op.txt", "a") as f2:
+        with open(output_dir+"/harmonic_omega_sq_v_q_G0K_op.txt", file_stat[iq1]) as f2:
             print(q_comp[0], q_comp[1], qtemp, np.real(
                 ev[0]), np.real(ev[1]),  file=f2)
